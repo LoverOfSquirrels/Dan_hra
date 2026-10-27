@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vila Rubín – diagram tříd a mapa</title>
+<style>
+  :root { color-scheme: light dark; font-family: var(--font-sans, system-ui, sans-serif); color: var(--foreground, CanvasText); }
+  body { margin: 0; }
+  main { max-width: 1000px; margin: 0 auto; }
+  h2 { font-size: 20px; font-weight: 600; margin: 20px 0 12px; }
+  p { font-size: 14px; line-height: 1.5; margin: 12px 0 24px; color: var(--muted-foreground, GrayText); }
+  svg { display: block; width: 100%; height: auto; }
+  .box { fill: var(--card, Canvas); stroke: var(--border, GrayText); stroke-width: 1.2; rx: 6; }
+  .group { fill: none; stroke: var(--border, GrayText); stroke-width: 1; stroke-dasharray: 5 4; rx: 6; }
+  .edge { fill: none; stroke: var(--foreground, CanvasText); stroke-width: 1.2; }
+  .dependency { stroke-dasharray: 4 3; }
+  .gate { stroke: var(--warning, GrayText); stroke-dasharray: 5 4; stroke-width: 2; }
+  text { fill: var(--foreground, CanvasText); font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; }
+  .name { font-size: 14px; font-weight: 600; }
+  .label { font-family: var(--font-sans, system-ui, sans-serif); font-size: 12px; }
+  .room { font-family: var(--font-sans, system-ui, sans-serif); font-size: 15px; }
+  .arrow { fill: var(--foreground, CanvasText); }
+  @media print { :root { color-scheme: light; } h2 { break-after: avoid; } svg { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<main>
+<h2>Diagram tříd C++17</h2>
+<svg viewBox="0 0 728 768" role="img" aria-labelledby="classes-title classes-desc">
+  <title id="classes-title">Třídy hry Vila Rubín</title>
+  <desc id="classes-desc">Konzolová smyčka používá parser a dispatcher. Dispatcher vybírá služby. Služby používají společnou relaci GameSession se stavem GameState a definicí GameWorld. WorldFactory sestavuje svět.</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path class="arrow" d="M0,0 L8,4 L0,8 Z"/></marker></defs>
+  <g class="edge" marker-end="url(#arrow)">
+    <path d="M320 86 V113 H120 V140"/>
+    <path d="M364 86 V140"/>
+    <path d="M408 86 V113 H608 V140"/>
+    <path d="M120 230 V285"/>
+    <path d="M364 230 V285"/>
+    <path d="M476 320 H486 V205 H496"/>
+    <path d="M608 250 V285"/>
+    <path d="M720 210 H725 V590 H608 V610"/>
+    <path d="M496 680 H476"/>
+    <path class="dependency" d="M120 610 V590 H570 V610"/>
+  </g>
+  <g>
+    <rect class="box" x="252" y="10" width="224" height="76"/>
+    <text class="name" x="266" y="35">ConsoleGame</text>
+    <text x="266" y="59">run()</text>
+    <rect class="box" x="8" y="140" width="224" height="90"/>
+    <text class="name" x="22" y="165">CommandParser</text>
+    <text x="22" y="190">parse(input)</text><text x="22" y="210">Text::normalize(input)</text>
+    <rect class="box" x="252" y="140" width="224" height="90"/>
+    <text class="name" x="266" y="165">CommandDispatcher</text>
+    <text x="266" y="190">dispatch(command)</text><text x="266" y="210">std::function strategie</text>
+    <rect class="box" x="496" y="140" width="224" height="110"/>
+    <text class="name" x="510" y="165">GameSession</text>
+    <text x="510" y="190">world_, state_, savedState_</text><text x="510" y="212">save(), load()</text>
+    <text class="label" x="510" y="234">Jeden uložený stav v RAM</text>
+    <rect class="box" x="8" y="285" width="224" height="94"/>
+    <text class="name" x="22" y="310">CommandRequest</text>
+    <text x="22" y="335">CommandKind kind</text><text x="22" y="357">subject, target</text>
+    <rect class="group" x="252" y="285" width="224" height="285"/>
+    <text class="label" x="266" y="308">Herní služby</text>
+    <text x="266" y="338">NavigationService</text><text x="266" y="368">ItemService</text>
+    <text x="266" y="398">PuzzleService</text><text x="266" y="428">DialogueService</text>
+    <text x="266" y="458">ReportService</text><text x="266" y="488">HintService</text>
+    <text x="266" y="518">GameView</text><text x="266" y="548">ObjectFinder</text>
+    <rect class="box" x="496" y="285" width="224" height="220"/>
+    <text class="name" x="510" y="310">GameState</text>
+    <text x="510" y="336">locationId</text><text x="510" y="360">inventory, journal</text>
+    <text x="510" y="384">itemLocations</text><text x="510" y="408">characterLocations</text>
+    <text x="510" y="432">flags, ending</text><text x="510" y="456">activeCharacter</text>
+    <text x="510" y="483">record(clue)</text>
+    <rect class="box" x="8" y="610" width="224" height="130"/>
+    <text class="name" x="22" y="635">WorldFactory</text><text x="22" y="660">create()</text>
+    <path class="edge" d="M8 674 H232"/>
+    <text class="name" x="22" y="698">LocationCatalog</text><text x="22" y="722">create()</text>
+    <rect class="group" x="252" y="610" width="224" height="130"/>
+    <text class="label" x="266" y="634">Datové třídy světa</text>
+    <text x="266" y="661">Location, Exit, Item</text><text x="266" y="687">Feature, Character</text>
+    <text x="266" y="713">Recipe, Clue</text>
+    <rect class="box" x="496" y="610" width="224" height="130"/>
+    <text class="name" x="510" y="635">GameWorld</text>
+    <text x="510" y="661">locations, items</text><text x="510" y="687">characters, recipes</text>
+    <text class="label" x="510" y="715">Definice se za hry nemění</text>
+  </g>
+  <text class="label" x="126" y="261">vytváří</text><text class="label" x="370" y="261">volá</text>
+  <text class="label" x="614" y="272">vlastní</text>
+</svg>
+<p>Šipky vyjadřují používání nebo vlastnictví. Přerušované rámečky seskupují související třídy. Úplné vztahy jednotlivých služeb a datových tříd jsou v ARCHITEKTURA.md.</p>
+<h2>Mapa lokací</h2>
+<svg viewBox="0 0 728 604" role="img" aria-labelledby="map-title map-desc">
+  <title id="map-title">Mapa dvanácti lokací</title>
+  <desc id="map-desc">Z haly vede cesta do knihovny, kuchyně, patra a sklepa. Knihovna vede do zamčené pracovny, kuchyně do spíže, dílny a verandy, patro do ložnice a sklep do zamčeného krytu. Všechny cesty umožňují návrat.</desc>
+  <g class="edge">
+    <path d="M364 526 V434"/><path d="M276 410 H212"/><path d="M452 410 H517"/>
+    <path d="M364 386 V294"/><path d="M276 410 H241 V130 H212"/>
+    <path d="M125 106 V54"/><path d="M605 386 V294"/><path d="M605 434 V526"/>
+    <path d="M693 410 H714 V30 H452"/>
+    <path class="gate" d="M125 386 V294"/><path class="gate" d="M364 246 V154"/>
+  </g>
+  <g>
+    <rect class="box" x="37" y="6" width="175" height="48"/><text class="room" x="125" y="36" text-anchor="middle">Ložnice</text>
+    <rect class="box" x="276" y="6" width="176" height="48"/><text class="room" x="364" y="36" text-anchor="middle">Veranda</text>
+    <rect class="box" x="37" y="106" width="175" height="48"/><text class="room" x="125" y="136" text-anchor="middle">Patro</text>
+    <rect class="box" x="276" y="106" width="176" height="48"/><text class="room" x="364" y="136" text-anchor="middle">Nouzový kryt</text>
+    <rect class="box" x="37" y="246" width="175" height="48"/><text class="room" x="125" y="276" text-anchor="middle">Pracovna</text>
+    <rect class="box" x="276" y="246" width="176" height="48"/><text class="room" x="364" y="276" text-anchor="middle">Sklep</text>
+    <rect class="box" x="517" y="246" width="176" height="48"/><text class="room" x="605" y="276" text-anchor="middle">Spíž</text>
+    <rect class="box" x="37" y="386" width="175" height="48"/><text class="room" x="125" y="416" text-anchor="middle">Knihovna</text>
+    <rect class="box" x="276" y="386" width="176" height="48"/><text class="room" x="364" y="416" text-anchor="middle">Vstupní hala</text>
+    <rect class="box" x="517" y="386" width="176" height="48"/><text class="room" x="605" y="416" text-anchor="middle">Kuchyně</text>
+    <rect class="box" x="276" y="526" width="176" height="48"/><text class="room" x="364" y="556" text-anchor="middle">Příjezdová cesta</text>
+    <rect class="box" x="517" y="526" width="176" height="48"/><text class="room" x="605" y="556" text-anchor="middle">Dílna</text>
+  </g>
+  <text class="label" x="140" y="343">klíč</text>
+  <text class="label" x="378" y="205">proud + páčidlo</text>
+</svg>
+<p>Čáry označují obousměrné propojení. Přerušované cesty vyžadují vyřešení hádanky; polohy v diagramu neurčují herní světové strany.</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+/build/
+/build-*/
+.vs/
+.idea/
+*.user
+artifacts/
+dist/
+/hra/
+
